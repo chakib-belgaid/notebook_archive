@@ -5,6 +5,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import gemeni
 
 # Function to process images and extract text using Google GenAI for OCR
 def process_images(image_folder):
@@ -55,6 +56,12 @@ def create_vector_knowledge_graph(tfidf_matrix):
 
     return graph
 
+# Function to store text data in markdown format
+def store_text_data_as_markdown(text_data, output_file):
+    with open(output_file, 'w') as f:
+        for text in text_data:
+            f.write(f"## Text Chunk\n{text}\n\n")
+
 # Main function to handle the transformation of images into a knowledge graph
 def main(image_folder):
     text_data = process_images(image_folder)
@@ -71,6 +78,9 @@ def main(image_folder):
     nx.write_gml(vector_knowledge_graph, "vector_knowledge_graph.gml")
     nx.draw(vector_knowledge_graph, with_labels=True)
     plt.show()
+
+    # Store text data in markdown format
+    store_text_data_as_markdown(text_data, "text_data.md")
 
 if __name__ == "__main__":
     image_folder = "path_to_image_folder"
